@@ -32,16 +32,17 @@ const projectSchema = new mongoose.Schema({
 });
 
 // Generate projectId before saving
-projectSchema.pre('save', async function(next) {
+projectSchema.pre('save', async function (next) {
   try {
     if (!this.projectId) {
-      const count = await mongoose.model('Project').countDocuments();
+      const count = await mongoose.model('Project').estimatedDocumentCount(); // More efficient than countDocuments()
       this.projectId = `PRJ${String(count + 1).padStart(4, '0')}`;
     }
     next();
   } catch (error) {
-    next(error);
+    console.error('Error generating projectId:', error);
+    next(); // Don't block the save operation
   }
 });
 
-module.exports = mongoose.model('Project', projectSchema); 
+module.exports = mongoose.model('Project', projectSchema);

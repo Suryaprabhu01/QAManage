@@ -1,14 +1,29 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './AddProjectModal.css';
 
 const AddProjectModal = ({ onClose, onAddProject }) => {
   const [projectName, setProjectName] = useState('');
   const [projectLogo, setProjectLogo] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onAddProject({ name: projectName, logo: projectLogo });
-    onClose();
+    try {
+      const formData = new FormData();
+      formData.append('name', projectName);
+      formData.append('logo', projectLogo);
+
+      const response = await axios.post('http://localhost:5000/api/projects', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      onAddProject(response.data);
+      onClose();
+    } catch (error) {
+      console.error('Error adding project:', error);
+    }
   };
 
   const handleLogoAttach = (e) => {
@@ -27,7 +42,7 @@ const AddProjectModal = ({ onClose, onAddProject }) => {
             <label>Project Name</label>
             <input
               type="text"
-              placeholder="Enter the document name"
+              placeholder="Enter the project name"
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
               required
@@ -35,7 +50,7 @@ const AddProjectModal = ({ onClose, onAddProject }) => {
           </div>
 
           <div className="form-group">
-            <label>Project logo</label>
+            <label>Project Logo</label>
             <div className="logo-input">
               <input
                 type="text"
@@ -64,4 +79,4 @@ const AddProjectModal = ({ onClose, onAddProject }) => {
   );
 };
 
-export default AddProjectModal; 
+export default AddProjectModal;

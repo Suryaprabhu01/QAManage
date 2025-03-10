@@ -7,8 +7,7 @@ const testCaseSchema = new mongoose.Schema({
     required: true
   },
   testCaseId: {
-    type: String,
-    unique: true
+    type: String
   },
   testCaseName: {
     type: String,

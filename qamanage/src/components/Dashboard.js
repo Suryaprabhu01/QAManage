@@ -6,6 +6,7 @@ import AddProjectModal from './AddProjectModal';
 import AddModuleModal from './AddModuleModal';
 import TestScenarios from './TestScenarios';
 import Modules from './Modules';
+import LogList from './LogList'; // Import LogList component
 
 const DEFAULT_QUICK_LINKS = [
   {
@@ -29,17 +30,15 @@ const Dashboard = ({ children }) => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeTab, setActiveTab] = useState(null);
   const [modules, setModules] = useState([]);
-
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const [quickLinks, setQuickLinks] = useState(DEFAULT_QUICK_LINKS);
   const [showAddProjectModal, setShowAddProjectModal] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const [showAddModuleModal, setShowAddModuleModal] = useState(false);
-
   const [view, setView] = useState('modules');
   const [selectedModule, setSelectedModule] = useState(null);
+  const [showLogs, setShowLogs] = useState(false); // State to show logs
 
   const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -150,6 +149,10 @@ const Dashboard = ({ children }) => {
     description: ''
   });
 
+  const handleActivityClick = () => {
+    setShowLogs(true);
+  };
+
   return (
     <div className="dashboard-container">
       <div className="sidebar">
@@ -230,7 +233,7 @@ const Dashboard = ({ children }) => {
           </div>
           <div 
             className={`nav-item ${isActivePath('/activity') ? 'active' : ''}`}
-            onClick={() => navigate('/activity')}
+            onClick={handleActivityClick} // Update to handle click
           >
             <span className="nav-icon">📝</span>
             <span>Activity</span>
@@ -265,7 +268,7 @@ const Dashboard = ({ children }) => {
 
       {/* Main Content Area */}
       <div className="main-content">
-        {children}
+        {showLogs ? <LogList /> : children} {/* Conditionally render LogList */}
       </div>
 
       {/* Add Project Modal */}
@@ -324,4 +327,4 @@ const Dashboard = ({ children }) => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

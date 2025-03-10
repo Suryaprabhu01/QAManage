@@ -1,8 +1,10 @@
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const connectDB = require('./models/db');
+const connectDB = require('./models/db'); // Keep this declaration
 const authRoutes = require('./routes/auth');
+const logRoutes = require('./routes/logs');
 
 // Import routes
 const projectRoutes = require('./routes/projects');
@@ -17,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-connectDB();
+connectDB(); // Use the existing declaration
 
 // Use routes
 app.use('/api/projects', projectRoutes);
@@ -25,8 +27,9 @@ app.use('/api/modules', moduleRoutes);
 app.use('/api/scenarios', scenarioRoutes);
 app.use('/api/testcases', testCaseRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/logs', logRoutes);
 
-// Error handling middleware
+// Error handling middleware (must be before 404 handler)
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(500).json({
@@ -36,7 +39,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Handle 404 errors
+// Handle 404 errors (should be last)
 app.use((req, res) => {
   console.log('404 for:', req.method, req.url);
   res.status(404).json({

@@ -5,7 +5,8 @@ import './AddModuleModal.css';
 const AddModuleModal = ({ projectId, onClose, onModuleAdded }) => {
   const [moduleData, setModuleData] = useState({
     moduleName: '',
-    subModuleName: ''
+    subModuleName: '',
+    username: '' // Add username field
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -65,11 +66,23 @@ const AddModuleModal = ({ projectId, onClose, onModuleAdded }) => {
               required
             />
           </div>
+          <div className="form-group">
+            <label>Username</label>
+            <input
+              type="text"
+              value={moduleData.username}
+              onChange={(e) => setModuleData({
+                ...moduleData,
+                username: e.target.value
+              })}
+              required
+            />
+          </div>
           <div className="modal-buttons">
             <button className="cancel-button" onClick={onClose}>
               Cancel
             </button>
-            <button className="add-button" onClick={handleSubmit}>
+            <button className="add-button" type="submit">
               Add Module
             </button>
           </div>

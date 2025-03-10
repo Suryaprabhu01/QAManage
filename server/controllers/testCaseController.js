@@ -1,185 +1,93 @@
 const TestCase = require('../models/TestCase');
 const Scenario = require('../models/Scenario');
+const logActivity = require('../middleware/Logger'); // Ensure the correct path
 const mongoose = require('mongoose');
 
+// Create new test case
 exports.createTestCase = async (req, res) => {
+  const { scenarioId, testCaseName, description, expectedResult, priority, status, username } = req.body;
   try {
-    console.log('Creating test case with data:', req.body);
-    
-    const { 
-      scenarioId, 
-      testCaseName, 
-      description, 
-      expectedResult, 
-      priority, 
-      status 
-    } = req.body;
+    const testCase = new TestCase({ scenarioId, testCaseName, description, expectedResult, priority, status });
+    await testCase.save();
 
-    // Validate required fields
-    if (!scenarioId || !testCaseName || !description || !expectedResult) {
-      return res.status(400).json({
-        success: false,
-        message: 'Missing required fields'
-      });
-    }
+    // Log the activity
+    await logActivity('TestCase', `Created Test Case ${testCaseName}`, 'TestCase', "username");
 
-    // Validate scenarioId format
-    if (!mongoose.Types.ObjectId.isValid(scenarioId)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid scenario ID format'
-      });
-    }
-
-    // Check if scenario exists
-    const scenario = await Scenario.findById(scenarioId);
-    if (!scenario) {
-      return res.status(404).json({
-        success: false,
-        message: 'Scenario not found'
-      });
-    }
-
-    const testCase = new TestCase({
-      scenarioId,
-      testCaseName,
-      description,
-      expectedResult,
-      priority: priority || 'Medium',
-      status: status || 'Active'
-    });
-
-    const savedTestCase = await testCase.save();
-
-    // Update scenario's test cases count
-    await Scenario.findByIdAndUpdate(scenarioId, {
-      $inc: { casesCount: 1 }
-    });
-
-    res.status(201).json({
-      success: true,
-      data: savedTestCase
-    });
+    res.status(201).json({ success: true, data: testCase });
   } catch (error) {
     console.error('Error creating test case:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to create test case',
-      error: error.message
-    });
+    res.status(500).json({ success: false, error: 'Server Error' });
   }
 };
 
+// Get all test cases for a scenario
 exports.getTestCases = async (req, res) => {
+  const { scenarioId } = req.params;
   try {
-    const { scenarioId } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(scenarioId)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid scenario ID format'
-      });
-    }
-
-    const testCases = await TestCase.find({ scenarioId })
-      .sort({ createdAt: -1 });
-
-    res.json({
-      success: true,
-      data: testCases
-    });
+    const testCases = await TestCase.find({ scenarioId }).sort({ createdAt: -1 });
+    res.json({ success: true, data: testCases });
   } catch (error) {
     console.error('Error fetching test cases:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error fetching test cases',
-      error: error.message
-    });
+    res.status(500).json({ success: false, error: 'Server Error' });
   }
 };
 
+// Get single test case by ID
 exports.getTestCaseById = async (req, res) => {
   try {
     const testCase = await TestCase.findById(req.params.id);
     if (!testCase) {
-      return res.status(404).json({
-        success: false,
-        message: 'Test case not found'
-      });
+      return res.status(404).json({ success: false, message: 'Test case not found' });
     }
-
-    res.json({
-      success: true,
-      data: testCase
-    });
+    res.json({ success: true, data: testCase });
   } catch (error) {
     console.error('Error fetching test case:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error fetching test case',
-      error: error.message
-    });
+    res.status(500).json({ success: false, error: 'Server Error' });
   }
 };
 
+// Update test case
 exports.updateTestCase = async (req, res) => {
+  const { testCaseName, description, expectedResult, priority, status, username } = req.body;
   try {
     const testCase = await TestCase.findByIdAndUpdate(
       req.params.id,
-      { ...req.body, updatedAt: new Date() },
+      { testCaseName, description, expectedResult, priority, status, updatedAt: new Date() },
       { new: true }
     );
 
     if (!testCase) {
-      return res.status(404).json({
-        success: false,
-        message: 'Test case not found'
-      });
+      return res.status(404).json({ success: false, message: 'Test case not found' });
     }
 
-    res.json({
-      success: true,
-      data: testCase
-    });
+    // Log the activity
+    await logActivity('TestCase', `Updated Test Case ${testCaseName}`, 'TestCase', username);
+
+    res.json({ success: true, data: testCase });
   } catch (error) {
     console.error('Error updating test case:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error updating test case',
-      error: error.message
-    });
+    res.status(500).json({ success: false, error: 'Server Error' });
   }
 };
 
+// Delete test case
 exports.deleteTestCase = async (req, res) => {
+  const { username } = req.body;
   try {
     const testCase = await TestCase.findById(req.params.id);
     if (!testCase) {
-      return res.status(404).json({
-        success: false,
-        message: 'Test case not found'
-      });
+      return res.status(404).json({ success: false, message: 'Test case not found' });
     }
 
     const scenarioId = testCase.scenarioId;
-
     await testCase.remove();
 
-    // Update scenario's test cases count
-    await Scenario.findByIdAndUpdate(scenarioId, {
-      $inc: { casesCount: -1 }
-    });
+    // Log the activity
+    await logActivity('TestCase', `Deleted Test Case ${testCase.testCaseName}`, 'TestCase', username);
 
-    res.json({
-      success: true,
-      message: 'Test case deleted successfully'
-    });
+    res.json({ success: true, message: 'Test case deleted successfully' });
   } catch (error) {
     console.error('Error deleting test case:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error deleting test case',
-      error: error.message
-    });
+    res.status(500).json({ success: false, error: 'Server Error' });
   }
-}; 
+};
