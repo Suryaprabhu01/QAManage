@@ -57,6 +57,105 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
   const isEditMode = mode === 'edit';
   const isAddMode = mode === 'add';
 
+  if (isAddMode) {
+    return (
+      <div className="modal-overlay">
+        <div className="add-modal-content">
+          <div className="modal-header">
+            <h2>Add New Case</h2>
+            <button className="close-btn" onClick={onClose}>×</button>
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Test Case ID</label>
+                <input
+                  type="text"
+                  placeholder="Enter the Test case ID"
+                  value={editedCase.testCaseId}
+                  onChange={(e) => setEditedCase({
+                    ...editedCase,
+                    testCaseId: e.target.value
+                  })}
+                />
+              </div>
+              <div className="form-group">
+                <label>Test Case Type</label>
+                <select
+                  value={editedCase.caseType}
+                  onChange={(e) => setEditedCase({
+                    ...editedCase,
+                    caseType: e.target.value
+                  })}
+                >
+                  <option value="">Choose the Test case Type</option>
+                  <option value="Positive">Positive</option>
+                  <option value="Negative">Negative</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Test Case Description</label>
+              <textarea
+                placeholder="Enter the Test case description"
+                value={editedCase.description}
+                onChange={(e) => setEditedCase({
+                  ...editedCase,
+                  description: e.target.value
+                })}
+              />
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>Expected Result</label>
+                <textarea
+                  placeholder="Enter the Expected Result"
+                  value={editedCase.expectedResult}
+                  onChange={(e) => setEditedCase({
+                    ...editedCase,
+                    expectedResult: e.target.value
+                  })}
+                />
+              </div>
+              <div className="form-group">
+                <label>Test Case Data</label>
+                <textarea
+                  placeholder="Enter the test case data"
+                  value={editedCase.testCaseData}
+                  onChange={(e) => setEditedCase({
+                    ...editedCase,
+                    testCaseData: e.target.value
+                  })}
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Steps</label>
+              <textarea
+                placeholder="Enter the steps to Test"
+                value={editedCase.steps}
+                onChange={(e) => setEditedCase({
+                  ...editedCase,
+                  steps: e.target.value
+                })}
+              />
+            </div>
+
+            <div className="add-case-actions">
+              <button type="submit" className="add-case-submit">
+                <span>+</span> Add Case
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">

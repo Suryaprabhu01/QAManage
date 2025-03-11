@@ -166,13 +166,22 @@ const TestCases = () => {
     });
   };
 
-  const handleModalSave = (updatedTestCase) => {
+  const handleModalSave = (newTestCase) => {
     if (modalState.mode === 'add') {
-      setTestCases([updatedTestCase, ...testCases]);
-    } else if (modalState.mode === 'edit') {
-      setTestCases(testCases.map(tc => 
-        tc._id === updatedTestCase._id ? updatedTestCase : tc
-      ));
+      const testCase = {
+        ...newTestCase,
+        _id: Date.now().toString(),
+        createdBy: {
+          name: 'Surya Prabhu T',
+          date: new Date().toLocaleDateString('en-US', {
+            month: 'long',
+            day: '2-digit',
+            year: 'numeric'
+          })
+        },
+        status: 'Untested'
+      };
+      setTestCases([testCase, ...testCases]);
     }
     handleModalClose();
   };
@@ -205,7 +214,7 @@ const TestCases = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <button className="add-case-btn" onClick={() => setShowAddModal(true)}>
+        <button className="add-case-btn" onClick={handleAddClick}>
           + Add Case
         </button>
       </div>
@@ -214,7 +223,7 @@ const TestCases = () => {
         <table>
           <thead>
             <tr>
-              <th>Test Case (50)</th>
+              <th>Test Case ({testCases.length})</th>
               <th>Created By</th>
               <th>Tested By</th>
               <th>Case Type</th>
@@ -223,7 +232,7 @@ const TestCases = () => {
             </tr>
           </thead>
           <tbody>
-            {dummyTestCases.map((testCase) => (
+            {filteredTestCases.map((testCase) => (
               <tr key={testCase._id}>
                 <td>
                   <div className="test-case-info">
@@ -239,17 +248,17 @@ const TestCases = () => {
                 </td>
                 <td>
                   <div className="user-info">
-                    <div className="name">{testCase.testedBy.name}</div>
-                    <div className="date">{testCase.testedBy.date}</div>
+                    <div className="name">{testCase.testedBy?.name || '-'}</div>
+                    <div className="date">{testCase.testedBy?.date || ''}</div>
                   </div>
                 </td>
                 <td>
-                  <span className={`case-type-badge ${testCase.caseType.toLowerCase()}`}>
+                  <span className={`case-type-badge ${testCase.caseType?.toLowerCase()}`}>
                     {testCase.caseType}
                   </span>
                 </td>
                 <td>
-                  <span className={`status-badge ${testCase.status.toLowerCase()}`}>
+                  <span className={`status-badge ${testCase.status?.toLowerCase()}`}>
                     {testCase.status}
                   </span>
                 </td>
@@ -278,15 +287,6 @@ const TestCases = () => {
           </tbody>
         </table>
       </div>
-
-      {showAddModal && (
-        <TestCaseModal
-          testCase={newTestCase}
-          mode="add"
-          onClose={() => setShowAddModal(false)}
-          onSave={handleAddTestCase}
-        />
-      )}
 
       {modalState.isOpen && (
         <TestCaseModal
