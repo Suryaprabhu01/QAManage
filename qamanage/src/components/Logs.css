@@ -1,0 +1,67 @@
+.logs-container {
+  padding: 20px;
+}
+
+.logs-header {
+  margin-bottom: 20px;
+}
+
+.search-filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.label-filter,
+.time-filter {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 120px;
+}
+
+.logs-table {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.logs-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.logs-table th {
+  background: #14365d;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.logs-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.label {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* Add these styles for alternating row colors */
+.logs-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.logs-table tbody tr:hover {
+  background-color: #f2f2f2;
+}

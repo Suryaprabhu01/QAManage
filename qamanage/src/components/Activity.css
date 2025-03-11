@@ -1,0 +1,93 @@
+.activity-container {
+  padding: 20px;
+  background: #f8f9fa;
+}
+
+.activity-header {
+  margin-bottom: 20px;
+}
+
+.breadcrumb {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.search-filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.filter-select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 120px;
+}
+
+.logs-table {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.logs-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.logs-table th {
+  background: #14365d;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: normal;
+}
+
+.logs-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.label {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.label-case {
+  background: #F2E8CF;
+}
+
+.label-scenario {
+  background: #E3F2F9;
+}
+
+.label-module {
+  background: #E9E9E9;
+}
+
+.label-project {
+  background: #E8F5E9;
+}
+
+.loading {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+}
+
+.logs-table tbody tr:hover {
+  background-color: #f5f5f5;
+} 

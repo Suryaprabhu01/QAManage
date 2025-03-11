@@ -1,0 +1,96 @@
+.testers-container {
+  padding: 24px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.testers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.testers-header h2 {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+}
+
+.add-tester-btn {
+  background-color: #f52109;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s;
+}
+
+.add-tester-btn:hover {
+  background-color: #d81c07;
+}
+
+.testers-table-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.testers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.testers-table th,
+.testers-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.testers-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.testers-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #f52109;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: rgba(245, 33, 9, 0.1);
+}
+
+@media (max-width: 768px) {
+  .testers-container {
+    padding: 16px;
+  }
+
+  .testers-table-container {
+    overflow-x: auto;
+  }
+
+  .testers-table th,
+  .testers-table td {
+    padding: 12px;
+  }
+}
+  
