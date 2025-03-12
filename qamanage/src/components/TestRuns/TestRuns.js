@@ -42,27 +42,61 @@ const TestRuns = () => {
 
   const testRunsData = [
     {
-      taskId: "T001",
-      subTaskId: "ST001",
-      scenario: "Login Test",
-      testedBy: "Alice",
-      cases: 10,
-      passFailUnexecuted: { pass: 7, fail: 2, unexecuted: 1 },
-      testStatus: "Completed",
-      testRegion: "Test Region",
-      timePeriod: "This Month",
+      taskId: "Task - 232",
+      subTaskId: "Task - 232 - Sub - 001",
+      scenario: "SpanPeople_SS_TS_01",
+      description: "Verify the user able to request the Timeoff on Past and Future saturdays.",
+      testedBy: "Surya Prabhu T",
+      date: "March 05 2025",
+      status: "Live",
+      cases: 100,
+      pass: 20,
+      fail: 20,
+      unexecuted: 20,
+      testStatus: "Fail"
     },
     {
-      taskId: "T002",
-      subTaskId: "ST002",
-      scenario: "Payment Gateway Test",
-      testedBy: "Bob",
-      cases: 15,
-      passFailUnexecuted: { pass: 12, fail: 2, unexecuted: 1 },
-      testStatus: "In Progress",
-      testRegion: "Test Region",
-      timePeriod: "Last Month",
+      taskId: "Task - 232",
+      subTaskId: "Task - 232 - Sub - 001",
+      scenario: "SpanPeople_SS_TS_01",
+      description: "Verify the user able to request the Timeoff on Past and Future saturdays.",
+      testedBy: "Surya Prabhu T",
+      date: "March 05 2025",
+      status: "Live",
+      cases: 100,
+      pass: 20,
+      fail: 20,
+      unexecuted: 20,
+      testStatus: "Fail"
     },
+    {
+      taskId: "Task - 232",
+      subTaskId: "Task - 232 - Sub - 001",
+      scenario: "SpanPeople_SS_TS_01",
+      description: "Verify the user able to request the Timeoff on Past and Future saturdays.",
+      testedBy: "Surya Prabhu T",
+      date: "March 05 2025",
+      status: "Live",
+      cases: 100,
+      pass: 20,
+      fail: 20,
+      unexecuted: 20,
+      testStatus: "Fail"
+    },
+    {
+      taskId: "Task - 232",
+      subTaskId: "Task - 232 - Sub - 001",
+      scenario: "SpanPeople_SS_TS_01",
+      description: "Verify the user able to request the Timeoff on Past and Future saturdays.",
+      testedBy: "Surya Prabhu T",
+      date: "March 05 2025",
+      status: "Live",
+      cases: 100,
+      pass: 20,
+      fail: 20,
+      unexecuted: 20,
+      testStatus: "Pass"
+    }
   ];
 
   const filteredData = testRunsData.filter(
@@ -125,13 +159,20 @@ const TestRuns = () => {
                 <td>{test.taskId}</td>
                 <td>{test.subTaskId}</td>
                 <td>{test.scenario}</td>
-                <td>{test.testedBy}</td>
+                <td>
+                  {test.testedBy}
+                  <br />
+                  {test.date}
+                  <br />
+                  <span className="status-badge">{test.status}</span>
+                </td>
                 <td>{test.cases}</td>
                 <td>
-                  {test.passFailUnexecuted.pass} | {test.passFailUnexecuted.fail} |{" "}
-                  {test.passFailUnexecuted.unexecuted}
+                  <span className="pass">{test.pass}</span> | <span className="fail">{test.fail}</span> | <span className="unexecuted">{test.unexecuted}</span>
                 </td>
-                <td>{test.testStatus}</td>
+                <td>
+                  <span className={`test-status ${test.testStatus.toLowerCase()}`}>{test.testStatus}</span>
+                </td>
                 <td>
                   <FaArrowRight className="action-arrow" />
                 </td>
