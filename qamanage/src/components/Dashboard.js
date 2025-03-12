@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import './Dashboard.css';
 import AddProjectModal from './AddProjectModal';
@@ -8,8 +8,7 @@ import TestScenarios from './TestScenarios';
 import Modules from './Modules';
 import AddDocumentModal from './AddDocumentModal';
 import UsersManagement from './users/UsersManagement';
-
-
+import TestRuns from './TestRuns/TestRuns'; // Import the new TestRuns component
 
 const DEFAULT_QUICK_LINKS = [
   {
@@ -420,6 +419,10 @@ const Dashboard = ({ children }) => {
             )}
           </div>
         </div>
+        <Routes>
+          <Route path="/testruns" element={<TestRuns />} />
+          {/* Add other routes here */}
+        </Routes>
         {showUsersPage ? (
           <UsersManagement />
         ) : (
@@ -497,4 +500,4 @@ const Dashboard = ({ children }) => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

@@ -27,7 +27,13 @@ const TestCases = () => {
     mode: null, // 'view', 'edit', or 'add'
     testCase: null
   });
-
+  
+  const handleStatusChange = (testCaseId, newStatus) => {
+    const updatedTestCases = testCases.map((test) =>
+      test.id === testCaseId ? { ...test, status: newStatus } : test
+    );
+    setTestCases(updatedTestCases);
+  };
   const API_BASE_URL = 'http://localhost:5000/api';
 
   // Add these dummy test cases
@@ -166,7 +172,7 @@ const TestCases = () => {
     });
   };
 
-  const handleModalSave = (newTestCase) => {
+  const handleModalSave = async (newTestCase) => {
     if (modalState.mode === 'add') {
       const testCase = {
         ...newTestCase,
@@ -182,8 +188,29 @@ const TestCases = () => {
         status: 'Untested'
       };
       setTestCases([testCase, ...testCases]);
+    } else if (modalState.mode === 'edit') {
+      try {
+        await axios.put(`${API_BASE_URL}/testcases/${newTestCase._id}`, newTestCase);
+        setTestCases((prevTestCases) =>
+          prevTestCases.map((testCase) =>
+            testCase._id === newTestCase._id ? newTestCase : testCase
+          )
+        );
+      } catch (error) {
+        console.error('Error updating test case:', error);
+      }
     }
     handleModalClose();
+    // Save the result to the test run
+    await saveResultToTestRun(newTestCase);
+  };
+
+  const saveResultToTestRun = async (testCase) => {
+    try {
+      await axios.post(`${API_BASE_URL}/testruns`, testCase);
+    } catch (error) {
+      console.error('Error saving result to test run:', error);
+    }
   };
 
   const filteredTestCases = testCases.filter(testCase =>
@@ -263,8 +290,19 @@ const TestCases = () => {
                   </span>
                 </td>
                 <td>
+                <select
+    className={`status-dropdown ${testCase.status?.toLowerCase()}`}
+    value={testCase.status}
+    onChange={(e) => handleStatusChange(testCase.id, e.target.value)}
+  >
+    <option value="Pass">Pass</option>
+    <option value="Fail">Fail</option>
+    <option value="Unexecuted">Unexecuted</option>
+  </select>
+                  </td>
+                  <td>
                   <div className="action-buttons">
-                    <button className="edit-btn" title="Edit">
+                    <button className="edit-btn" title="Edit" onClick={() => handleEditClick(testCase)}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
@@ -300,4 +338,4 @@ const TestCases = () => {
   );
 };
 
-export default TestCases; 
+export default TestCases;

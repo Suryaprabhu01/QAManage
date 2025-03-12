@@ -72,7 +72,7 @@
 }
 
 .form-group textarea {
-  width: 100%;
+  width: 90%;
   padding: 5px 8px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
@@ -83,7 +83,7 @@
 
 /* Specific textarea heights */
 .form-group textarea[placeholder="Enter the Test case description"] {
-  height: 45px;
+  height: 5px;
 }
 
 .form-group textarea[placeholder="Enter the Expected Result"],
@@ -121,4 +121,311 @@
 .add-case-submit span {
   font-size: 14px;
   line-height: 1;
+}
+
+/* Add to existing CSS */
+.cancel-btn {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.cancel-btn:hover {
+  background-color: #e9ecef;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn,
+.view-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.edit-btn:hover,
+.view-btn:hover {
+  background-color: #f8f9fa;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-untested {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+
+.status-passed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-failed {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.date {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+/* Add to existing CSS */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.add-result-btn,
+.save-result-btn,
+.edit-case-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-result-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+}
+
+.save-result-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+.edit-case-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.reference-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.reference-input input[type="text"] {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #f8f9fa;
+  cursor: default;
+}
+
+.attach-btn,
+.clear-btn {
+  padding: 8px;
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.attach-btn:hover {
+  background-color: #e9ecef;
+  border-color: #ced4da;
+}
+
+.clear-btn {
+  color: #dc3545;
+}
+
+.clear-btn:hover {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+
+/* Loading state for video */
+.preview-video::-webkit-media-controls {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.preview-video::-webkit-media-controls-panel {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.file-preview {
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-preview {
+  width: 100%;
+  max-width: 600px;
+  margin: 10px auto;
+}
+
+.preview-video {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  background: #000;
+  border-radius: 4px;
+}
+
+.image-preview {
+  max-width: 400px;
+  margin: 10px auto;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.results-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+/* Status Select Styles */
+.status-select,
+.case-type-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Case Type Colors */
+.case-type-select.positive {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.case-type-select.negative {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+/* Status Colors */
+.status-select.pass {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.status-select.fail {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.status-select.untested {
+  border-color: #6c757d;
+  color: #6c757d;
+}
+
+/* Status Badge Styles */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.pass {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.status-badge.fail {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+.status-badge.untested {
+  background-color: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+}
+
+/* Case Type Badge Styles */
+.case-type-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.case-type-badge.positive {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.case-type-badge.negative {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+/* Option Styles */
+.status-option,
+.case-type-option {
+  padding: 8px;
+}
+
+select option {
+  padding: 8px;
+  font-size: 14px;
+}
+
+select option[value="Pass"],
+select option[value="Positive"] {
+  color: #28a745;
+}
+
+select option[value="Fail"],
+select option[value="Negative"] {
+  color: #dc3545;
+}
+
+select option[value="Untested"] {
+  color: #6c757d;
 }

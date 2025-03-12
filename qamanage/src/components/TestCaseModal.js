@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './TestCaseModal.css';
 
 const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
@@ -21,22 +21,36 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
     bugPriority: ''
   });
 
+  const fileInputRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileType, setFileType] = useState(null);
+
+  // Define status options with their colors
+  const statusOptions = [
+    { value: 'Pass', label: 'Pass', color: '#28a745' },
+    { value: 'Fail', label: 'Fail', color: '#dc3545' },
+    { value: 'Untested', label: 'Untested', color: '#6c757d' }
+  ];
+
+  // Define case type options
+  const caseTypeOptions = [
+    { value: 'Positive', label: 'Positive', color: '#28a745' },
+    { value: 'Negative', label: 'Negative', color: '#dc3545' }
+  ];
+
   const handleAddResult = () => {
     const updatedResults = [...(editedCase.results || []), {
       ...newResult,
       testedBy: 'Surya Prabhu T',
-      date: new Date().toLocaleDateString('en-US', {
-        month: 'long',
-        day: '2-digit',
-        year: 'numeric'
-      })
+      date: new Date().toLocaleDateString()
     }];
-    
+
     setEditedCase({
       ...editedCase,
       results: updatedResults
     });
 
+    // Clear the form after adding
     setNewResult({
       testRegion: '',
       testStatus: '',
@@ -47,10 +61,64 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
     });
   };
 
+  const handleSaveResult = () => {
+    handleAddResult();
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(editedCase);
     onClose();
+  };
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check if file is image or video
+      if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
+        setSelectedFile(file);
+        setFileType(file.type.startsWith('image/') ? 'image' : 'video');
+        setNewResult({
+          ...newResult,
+          reference: file.name,
+          referenceType: file.type.startsWith('image/') ? 'image' : 'video'
+        });
+      } else {
+        alert('Please select an image or video file');
+      }
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const renderFilePreview = () => {
+    if (!selectedFile) return null;
+
+    if (fileType === 'video') {
+      return (
+        <div className="file-preview video-preview">
+          <video
+            src={URL.createObjectURL(selectedFile)}
+            controls
+            className="preview-video"
+          >
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      );
+    }
+
+    return (
+      <div className="file-preview image-preview">
+        <img
+          src={URL.createObjectURL(selectedFile)}
+          alt="Preview"
+          className="preview-image"
+        />
+      </div>
+    );
   };
 
   const isViewMode = mode === 'view';
@@ -88,10 +156,18 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
                     ...editedCase,
                     caseType: e.target.value
                   })}
+                  className={`case-type-select ${editedCase.caseType?.toLowerCase()}`}
                 >
-                  <option value="">Choose the Test case Type</option>
-                  <option value="Positive">Positive</option>
-                  <option value="Negative">Negative</option>
+                  <option value="">Choose the Test Case Type</option>
+                  {caseTypeOptions.map(option => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                      className={`case-type-option ${option.value.toLowerCase()}`}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -190,10 +266,18 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
                       caseType: e.target.value
                     })}
                     disabled={isViewMode}
+                    className={`case-type-select ${editedCase.caseType?.toLowerCase()}`}
                   >
-                    <option value="">Choose the Test case Type</option>
-                    <option value="Positive">Positive</option>
-                    <option value="Negative">Negative</option>
+                    <option value="">Choose the Test Case Type</option>
+                    {caseTypeOptions.map(option => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        className={`case-type-option ${option.value.toLowerCase()}`}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -262,7 +346,7 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
                           <span className="date">{result.date}</span>
                         </div>
                       </div>
-                      
+
                       <div className="result-form">
                         <div className="form-row">
                           <div className="form-group">
@@ -285,7 +369,7 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
 
                         <div className="form-group">
                           <label>Comments</label>
-                          <textarea 
+                          <textarea
                             placeholder="Enter the Test Region"
                             value={result.comments}
                             disabled
@@ -295,8 +379,8 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
                         <div className="form-group">
                           <label>Reference</label>
                           <div className="reference-input">
-                            <input 
-                              type="text" 
+                            <input
+                              type="text"
                               placeholder="Image or Video"
                               value={result.reference}
                               disabled
@@ -308,7 +392,7 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
                         <div className="form-row">
                           <div className="form-group">
                             <label>Bug Reference ID</label>
-                            <input 
+                            <input
                               type="text"
                               placeholder="Enter the Bug Ref ID"
                               value={result.bugReferenceId}
@@ -341,7 +425,7 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
                               testRegion: e.target.value
                             })}
                           >
-                            <option>Choose the Test Region</option>
+                            <option value="">Choose the Test Region</option>
                             <option value="Production">Production</option>
                             <option value="Staging">Staging</option>
                           </select>
@@ -354,17 +438,25 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
                               ...newResult,
                               testStatus: e.target.value
                             })}
+                            className={`status-select ${newResult.testStatus?.toLowerCase()}`}
                           >
-                            <option>Choose the Test Status</option>
-                            <option value="Pass">Pass</option>
-                            <option value="Fail">Fail</option>
+                            <option value="">Choose the Test Status</option>
+                            {statusOptions.map(option => (
+                              <option
+                                key={option.value}
+                                value={option.value}
+                                className={`status-option ${option.value.toLowerCase()}`}
+                              >
+                                {option.label}
+                              </option>
+                            ))}
                           </select>
                         </div>
                       </div>
 
                       <div className="form-group">
                         <label>Comments</label>
-                        <textarea 
+                        <textarea
                           placeholder="Enter the Test Region"
                           value={newResult.comments}
                           onChange={(e) => setNewResult({
@@ -377,23 +469,53 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
                       <div className="form-group">
                         <label>Reference</label>
                         <div className="reference-input">
-                          <input 
-                            type="text" 
+                          <input
+                            type="text"
                             placeholder="Image or Video"
                             value={newResult.reference}
-                            onChange={(e) => setNewResult({
-                              ...newResult,
-                              reference: e.target.value
-                            })}
+                            readOnly
                           />
-                          <button type="button" className="attach-btn">📎</button>
+                          <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleFileSelect}
+                            accept="image/*,video/*,.mp4,.mov,.avi,.mkv"
+                            style={{ display: 'none' }}
+                          />
+                          <button
+                            type="button"
+                            className="attach-btn"
+                            onClick={handleUploadClick}
+                            title="Upload Image/Video"
+                          >
+                            📎
+                          </button>
+                          {selectedFile && (
+                            <button
+                              type="button"
+                              className="clear-btn"
+                              onClick={() => {
+                                setSelectedFile(null);
+                                setFileType(null);
+                                setNewResult({
+                                  ...newResult,
+                                  reference: '',
+                                  referenceType: null
+                                });
+                              }}
+                              title="Remove file"
+                            >
+                              ✕
+                            </button>
+                          )}
                         </div>
+                        {selectedFile && renderFilePreview()}
                       </div>
 
                       <div className="form-row">
                         <div className="form-group">
                           <label>Bug Reference ID</label>
-                          <input 
+                          <input
                             type="text"
                             placeholder="Enter the Bug Ref ID"
                             value={newResult.bugReferenceId}
@@ -412,7 +534,7 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
                               bugPriority: e.target.value
                             })}
                           >
-                            <option>Choose the Bug Priority</option>
+                            <option value="">Choose the Bug Priority</option>
                             <option value="High">High</option>
                             <option value="Medium">Medium</option>
                             <option value="Low">Low</option>
@@ -427,19 +549,27 @@ const TestCaseModal = ({ testCase, onClose, onSave, mode = 'view' }) => {
 
             <div className="modal-actions">
               {(isEditMode || isViewMode) && (
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="add-result-btn"
                   onClick={handleAddResult}
                 >
                   + Add Result
                 </button>
               )}
-              <button 
-                type="submit" 
-                className="submit-btn"
+              <button
+                type="button"
+                className="save-result-btn"
+                onClick={handleSaveResult}
               >
-                {isAddMode ? 'Add Case' : 'Edit Case'}
+                Save Result
+              </button>
+              <button
+                type="button"
+                className="edit-case-btn"
+                onClick={() => onSave(editedCase)}
+              >
+                Edit Case
               </button>
             </div>
           </form>

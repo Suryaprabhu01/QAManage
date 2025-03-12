@@ -13,6 +13,7 @@ import Scenarios from './components/Scenarios';
 import TestCases from './components/TestCases';
 import Modules from './components/Modules';
 import Activity from './components/Activity';
+import TestRuns from './components/TestRuns/TestRuns'; // Import the TestRuns component
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/modules/scenarios/:moduleId" element={<Dashboard><Scenarios /></Dashboard>} />
           <Route path="/modules/scenarios/testcases/:scenarioId" element={<Dashboard><TestCases /></Dashboard>} />
           <Route path="/projects/:projectId/activity" element={<Dashboard><Activity /></Dashboard>} />
+          <Route path="/testruns" element={<Dashboard><TestRuns /></Dashboard>} /> {/* Add the TestRuns route */}
           <Route
             path="/add-admin"
             element={

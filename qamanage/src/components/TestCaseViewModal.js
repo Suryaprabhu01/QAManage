@@ -52,6 +52,13 @@ const TestCaseViewModal = ({ testCase, onClose }) => {
             />
           </div>
 
+          <div className="form-group">
+            <label>Reference</label>
+            <div className="reference-input">
+              <input type="text" value={testCase.reference || ''} disabled />
+            </div>
+          </div>
+
           <div className="results-section">
             <h3>Results</h3>
             
@@ -86,8 +93,7 @@ const TestCaseViewModal = ({ testCase, onClose }) => {
               <div className="form-group">
                 <label>Reference</label>
                 <div className="reference-input">
-                  <input type="text" placeholder="Image or Video" disabled />
-                  <button className="attach-btn" disabled>📎</button>
+                  <input type="text" placeholder="Image or Video" value={testCase.reference || ''} disabled />
                 </div>
               </div>
 
@@ -117,4 +123,4 @@ const TestCaseViewModal = ({ testCase, onClose }) => {
   );
 };
 
-export default TestCaseViewModal; 
+export default TestCaseViewModal;
